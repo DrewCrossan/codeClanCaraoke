@@ -3,6 +3,7 @@ from classes.guest import Guest
 from classes.song import Song
 from classes.room import Room
 
+
 class TestRoom(unittest.TestCase):
     def setUp(self):
         self.room = Room("Room1", 3, 1.00)
@@ -14,16 +15,20 @@ class TestRoom(unittest.TestCase):
         self.guest2 = Guest("Gemma", 10.00, self.song2)
         self.guest3 = Guest("Harley", 5.00, self.song3)
 
-
     def test_create_room(self):
         self.assertEqual("Room1", self.room.room)
-
 
     def test_check_in_guest(self):
         self.room.check_in_guest(self.guest)
 
         self.assertEqual(1, len(self.room.guests))
 
+    def test_check_in_guest_need_more_money(self):
+        self.guest4 = Guest("Mr. Poor", 0.00, Song("Pls give me me money", "Naecash"))
+
+        self.assertEqual(
+            "Sorry, you don't have enough money", self.room.check_in_guest(self.guest4)
+        )
 
     def test_check_out_guest(self):
         self.room.check_in_guest(self.guest)
@@ -31,12 +36,10 @@ class TestRoom(unittest.TestCase):
 
         self.assertEqual(0, len(self.room.guests))
 
-
     def test_add_song_to_room(self):
         self.room.add_song_to_room(self.song)
 
         self.assertEqual(1, len(self.room.songs))
-
 
     def test_remove_song_from_room(self):
         self.room.add_song_to_room(self.song)
@@ -48,7 +51,6 @@ class TestRoom(unittest.TestCase):
         self.assertEqual(1, len(self.room.songs))
         self.assertEqual(2, len(self.room2.songs))
 
-
     def test_is_room1_full(self):
         self.room.check_in_guest(self.guest)
         self.room.check_in_guest(self.guest2)
@@ -56,7 +58,6 @@ class TestRoom(unittest.TestCase):
 
         self.assertEqual("Sorry this room is full", self.room.is_room_full())
         self.assertEqual(False, self.room2.is_room_full())
-
 
     def test_is_room2_full(self):
         self.room2.check_in_guest(self.guest)
@@ -68,14 +69,12 @@ class TestRoom(unittest.TestCase):
         self.assertEqual("Sorry this room is full", self.room2.is_room_full())
         self.assertEqual(False, self.room.is_room_full())
 
-
     def test_guest_favourite_song(self):
         self.room.add_song_to_room(self.song)
         self.room.add_song_to_room(self.song2)
         self.room.add_song_to_room(self.song3)
 
         self.assertEqual("Whoo!", self.room.guest_favourite_song(self.guest))
-
 
     def test_room_total(self):
         self.room.check_in_guest(self.guest)
@@ -93,7 +92,6 @@ class TestRoom(unittest.TestCase):
         self.assertEqual(9, self.guest2.wallet)
         self.assertEqual(4, self.guest3.wallet)
 
-
     def test_room2_total(self):
         self.room2.check_in_guest(self.guest)
         self.room2.check_in_guest(self.guest2)
@@ -110,4 +108,7 @@ class TestRoom(unittest.TestCase):
         self.assertEqual(8, self.guest2.wallet)
         self.assertEqual(3, self.guest3.wallet)
 
+    def test_request_a_song(self):
+        self.room.request_a_song()
 
+        self.assertEqual(1, len(self.room.songs))

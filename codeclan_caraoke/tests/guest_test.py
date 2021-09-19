@@ -3,6 +3,7 @@ from classes.guest import Guest
 from classes.song import Song
 from classes.room import Room
 
+
 class TestGuest(unittest.TestCase):
     def setUp(self):
         self.song = Song("Streets", "Doja Cat")
@@ -18,5 +19,3 @@ class TestGuest(unittest.TestCase):
         self.guest.wallet_reduced(Room("Room2", 5, 2))
 
         self.assertEqual(7.00, self.guest.wallet)
-
-
